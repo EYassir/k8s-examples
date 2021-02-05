@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: helloworld-nginx
+  labels:
+    app: helloworld-nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.11
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: config-volume
+      mountPath: /etc/nginx/conf.d
+    - name: cred-volume
+      mountPath: /etc/creds
+      readOnly: true
+  - name: k8s-demo
+    image: 411953124370.dkr.ecr.eu-west-1.amazonaws.com/go-docker:v2
+    ports:
+    - containerPort: 9000
+  imagePullSecrets:
+  - name: regcred
+  volumes:
+    - name: config-volume
+      configMap:
+        - name: nginx-conf
+          items:
+          - key: reverseproxy.conf
+            path: reverseproxy.conf
+        - name: apache-conf
+          items:
+          - key: apache2.conf
+            path: apache2.conf
+    - name: cred-volume
+      secret: 
+          secretName: db-secret

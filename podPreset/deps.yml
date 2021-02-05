@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      Apphe: hello
+  template:
+    metadata:
+      labels:
+        Apphe: hello
+    spec:
+      containers:
+      - name: k8s-demo
+        image: 411953124370.dkr.ecr.eu-west-1.amazonaws.com/go-docker:v2
+        ports:
+        - name: go-port
+          containerPort: 9000
+      imagePullSecrets:
+      - name: regcred    
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-2
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      App: myapp-2
+  template:
+    metadata:
+      labels:
+        App: myapp-2
+    spec:
+      containers:
+      - name: k8s-demo
+        image: 411953124370.dkr.ecr.eu-west-1.amazonaws.com/go-docker:latest
+        ports:
+        - name: go-port
+          containerPort: 9000
+      imagePullSecrets:
+      - name: regcred

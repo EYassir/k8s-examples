@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloworld-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: helloworld
+  template:
+    metadata:
+      labels:
+        app: helloworld
+    spec:
+      containers:
+      - name: k8s-demo
+        image: 411953124370.dkr.ecr.eu-west-1.amazonaws.com/go-docker:v1
+        ports:
+        - name: go-port
+          containerPort: 9000
+      imagePullSecrets:
+      - name: regcred  

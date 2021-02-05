@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: helloworld-service-1
+spec:
+  ports:
+  - port: 80
+    targetPort: go-port
+    protocol: TCP
+  selector:
+    app: helloworld-1
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: helloworld-service-2
+spec:
+  ports:
+  - port: 80
+    targetPort: go-port
+    protocol: TCP
+  selector:
+    app: helloworld-2
+  type: ClusterIP

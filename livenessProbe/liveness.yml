@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloworld-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: helloworld
+  template:
+    metadata:
+      labels:
+        app: helloworld
+    spec:
+      containers:
+      - name: k8s-demo
+        image: 411953124370.dkr.ecr.eu-west-1.amazonaws.com/go-docker
+        ports:
+        - name: go-port
+          containerPort: 9000
+        livenessProbe:
+          httpGet:
+            path: /
+            port: go-port
+          initialDelaySeconds: 15
+          timeoutSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: go-port
+          initialDelaySeconds: 15
+          timeoutSeconds: 30 
+      imagePullSecrets:
+      - name: regcred
+      

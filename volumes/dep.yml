@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloworld-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: helloworld
+  template:
+    metadata:
+      labels:
+        app: helloworld
+    spec:
+      containers:
+      - name: k8s-demo
+        image: 411953124370.dkr.ecr.eu-west-1.amazonaws.com/go-docker:latest
+        ports:
+        - name: go-port
+          containerPort: 9000
+        volumeMounts:
+        - mountPath: /myvol
+          name: myvolume
+      volumes:
+      - name: myvolume
+        awsElasticBlockStore:
+          volumeID: vol-0fd06af2d9af72a2c
+      imagePullSecrets:
+      - name: regcred
